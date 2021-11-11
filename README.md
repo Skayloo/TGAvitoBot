@@ -7,6 +7,3 @@
   
   Запустите используя Docker Compose:
 `docker-compose up`  
- 
- Видео:
- https://youtu.be/2WBQMD3EOhs

@@ -1,5 +1,5 @@
 import db
-from parserr.parserr import get_ads_list, get_new_ads
+from parserr import get_ads_list, get_new_ads
 from main import bot
 import time
 

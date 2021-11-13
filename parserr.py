@@ -62,12 +62,17 @@ def get_ads_list(avito_search_url):
 
         except:
             ad_img = None
-
+        try:
+            ad_review = ad.find(class_ = 'iva-item-text-_s_vh iva-item-description-S2pXQ text-text-LurtD text-size-s-BxGpL').get_text()
+        except:
+            ad_review = "Нет описания"
+            
         ads_list.append({
             'title': ad_header,
             'price': ad_price,
             'url': ad_url,
-            'img': ad_img
+            'img': ad_img,
+            'review': ad_review
         })
 
     return ads_list

@@ -15,8 +15,7 @@ def send_updates():
             new_ads = get_new_ads(actual_ads, old_ads)
 
             for n_a in new_ads:
-                msg = n_a['title'].rstrip() + '\n' + n_a['price'].rstrip() + \
-                      '\n' + n_a['url']
+                msg = n_a['title'].rstrip() + '\n' + n_a['price'].rstrip() + '\n' + n_a['url'] + '\n' + n_a['review']
 
                 # if n_a['img']:
                 #     from utils import get_img_file_by_url
@@ -40,7 +39,7 @@ if __name__ == '__main__':
     import schedule
 
     send_updates()
-    schedule.every(2).minutes.do(send_updates)
+    schedule.every(1).minutes.do(send_updates)
 
     while True:
         schedule.run_pending()

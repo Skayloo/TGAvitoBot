@@ -28,7 +28,7 @@ def add_search(message):
                      '(Автомобили с пробегом марки Toyota в Казани).\n'
                      'Обратите внимание на то, что используется мобильная версия Avito.\n',
                      disable_web_page_preview=True)
-    bot.send_message(message.chat.id, 'Если вы используете полноценную версию - добавьте `.m` в начале ссылки.',
+    bot.send_message(message.chat.id, 'Если вы используете полноценную версию - добавьте `.m` в начале ссылки. Но в принципе можете въебать и полную версию только www. замените на m. Разницы никакой, а ебли меньше',
                      parse_mode='markdown')
     msg = bot.send_message(message.chat.id, 'Ожидаю ссылку...')
 

@@ -42,43 +42,33 @@ def get_ads_list(avito_search_url):
     :return: ads list
     """
     html = get_html(avito_search_url)
-    soup = BeautifulSoup(html, 'lxml')
-    ads = soup.find_all('article', {'class': 'b-item'})
+    soup = BeautifulSoup(html, 'html.parser')
+    ads = soup.find_all(class_='iva-item-root-Nj_hb photo-slider-slider-_PvpN iva-item-list-H_dpX iva-item-redesign-nV4C4 iva-item-responsive-gIKjW items-item-My3ih items-listItem-Gd1jN js-catalog-item-enum')
 
     ads_list = []
     for ad in ads:
-        ad_wrapper = ad.find('div', {'class': 'b-item-wrapper'})
-        ad_wrapper_a = ad_wrapper.find('a')
+        ad_url = ad.find(class_ = 'link-link-MbQDP link-design-default-_nSbv title-root-j7cja iva-item-title-_qCwt title-listRedesign-XHq38 title-root_maxHeight-SXHes').get('href')
 
-        ad_id = ad.attrs['data-item-id']
-        ad_url = 'https://m.avito.ru' + ad_wrapper_a.attrs['href']
-        ad_header = ad_wrapper_a.find('h3').text
+        ad_url = 'https://m.avito.ru' + ad_url
+        ad_header = ad.find(class_ = 'title-root-j7cja iva-item-title-_qCwt title-listRedesign-XHq38 title-root_maxHeight-SXHes text-text-LurtD text-size-s-BxGpL text-bold-SinUO').get_text()
 
-        ad_price = ad_wrapper_a.find('div', {'class': 'item-price'})
-        ad_price = ad_price.find('span').text
+        ad_price = ad.find(class_='price-text-E1Y7h text-text-LurtD text-size-s-BxGpL').get_text()
+        try:
+            ad_img_raw = ad.find(class_='photo-slider-list-item-_fUPr')
+            ad_img_raw = str(ad_img_raw)
+            ad_img = ad_img_raw.split('https:')
+            ad_img = ad_img[2].split('"')
+            ad_img = 'https:' + ad_img[0]
 
-        ad_img = ad_wrapper_a.find('div', {'class': 'item-img'})
-        ad_img_span = ad_img.find('span')
-
-        if ad_img_span:
-            ad_img = ad_img_span.attrs['style']
-            ad_img = ad_img.split(' ')[1]
-            ad_img = 'https://' + ad_img[6:-2]
-        else:
+        except:
             ad_img = None
 
-        is_ad_premium = 'item-vip' in ad.attrs['class']
-        is_ad_highlight = 'item-highlight' in ad.attrs['class']
-
-        # print("%-70s %-15s %-15s" % (ad_header, ad_price, ad_id))
-        if not is_ad_premium and not is_ad_highlight:
-            ads_list.append({
-                'id': ad_id,
-                'title': ad_header.replace(u'\xa0', u' '),
-                'price': ad_price.replace(u'\xa0', u' '),
-                'url': ad_url,
-                'img': ad_img
-            })
+        ads_list.append({
+            'title': ad_header,
+            'price': ad_price,
+            'url': ad_url,
+            'img': ad_img
+        })
 
     return ads_list
 
